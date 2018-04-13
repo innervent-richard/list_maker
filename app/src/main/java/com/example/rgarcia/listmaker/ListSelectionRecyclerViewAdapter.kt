@@ -5,10 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 
-class ListSelectionRecyclerViewAdapter(val lists : ArrayList<TaskList>) : RecyclerView.Adapter<ListSelectionViewHolder>() {
+class ListSelectionRecyclerViewAdapter(val lists: ArrayList<TaskList>, val clickListener: ListSelectionRecyclerViewClickListener) : RecyclerView.Adapter<ListSelectionViewHolder>() {
 
 
     val listTitles = arrayOf("Shopping List", "Chores", "Android Tutorials");
+
+    interface ListSelectionRecyclerViewClickListener {
+        fun listItemClicked(list: TaskList)
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListSelectionViewHolder {
         val view = LayoutInflater.from(parent?.context)
@@ -28,6 +33,9 @@ class ListSelectionRecyclerViewAdapter(val lists : ArrayList<TaskList>) : Recycl
         if (holder != null) {
             holder.listPosition.text = (position + 1).toString()
             holder.listTitle.text = lists.get(position).name
+            holder.itemView.setOnClickListener({
+                clickListener.listItemClicked(lists.get(position))
+            })
         }
     }
 
